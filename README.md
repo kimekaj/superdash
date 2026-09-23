@@ -1,6 +1,8 @@
 # Guitar Modes Explorer + Chord Explorer + Bass Modes Explorer
 
-A static website (no build step, no internet needed). Works on desktop, phones and iPads.
+A static website so simple it could run on a potato. No build step, no cloud magic, no “please wait while we optimize your experience.” It just works — on desktops, phones, tablets, and probably your smart fridge.
+
+No cookies. No tracking. No creepy analytics.
 
 ## Run it
 
