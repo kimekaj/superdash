@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c0710">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bass">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c0710'/%3E%3Ccircle cx='11' cy='11' r='4' fill='%23f5439b'/%3E%3Ccircle cx='21' cy='21' r='4' fill='%239b6bff'/%3E%3C/svg%3E">
+<title>Bass Modes Explorer</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="bass">
+
+<header class="topbar">
+  <div class="brand">
+    <h1>Bass Modes <span>Explorer</span></h1>
+    <div class="brand-meta">
+      <span class="live-dot"></span>
+      <span id="tuningMeta">STANDARD E &nbsp;·&nbsp; 4 STRINGS &nbsp;·&nbsp; E&nbsp;A&nbsp;D&nbsp;G</span>
+    </div>
+    <nav class="page-nav">
+      <a href="index.html" class="page-nav-link">Modes</a>
+      <a href="chords.html" class="page-nav-link">Chords</a>
+      <a href="bass.html" class="page-nav-link active">Bass</a>
+    </nav>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn" id="playBtn">▶ PLAY SCALE</button>
+    <button class="btn" id="randomBtn">RANDOM ⟳</button>
+    <button class="btn" id="resetBtn">RESET</button>
+    <div class="settings-menu">
+      <button class="btn settings-toggle" id="themeToggle">◐ THEME</button>
+      <div class="settings-panel" id="themePanel">
+        <div class="settings-panel-title">Choose Theme</div>
+        <button class="theme-option" data-theme="default">
+          <span class="swatch" style="background:#f5439b"></span>
+          <span class="opt-label">Default</span>
+          <span class="check">✓</span>
+        </button>
+        <button class="theme-option" data-theme="pipboy">
+          <span class="swatch" style="background:#4dff9c"></span>
+          <span class="opt-label">Pip-Boy</span>
+          <span class="check">✓</span>
+        </button>
+        <button class="theme-option" data-theme="paper">
+          <span class="swatch" style="background:#a1332c"></span>
+          <span class="opt-label">Paper</span>
+          <span class="check">✓</span>
+        </button>
+        <button class="theme-option" data-theme="sakura">
+          <span class="swatch" style="background:#ff5fa8"></span>
+          <span class="opt-label">Sakura</span>
+          <span class="check">✓</span>
+        </button>
+        <button class="theme-option" data-theme="sky">
+          <span class="swatch" style="background:#5db8f2"></span>
+          <span class="opt-label">Sky</span>
+          <span class="check">✓</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="filterbar">
+    <div class="field">
+      <label for="keySelect">KEY</label>
+      <select id="keySelect"></select>
+    </div>
+    <div class="field">
+      <label for="modeSelect">MODE</label>
+      <select id="modeSelect"></select>
+    </div>
+    <div class="field readout">
+      <label>&nbsp;</label>
+      <div class="pill" id="currentPill">D Dorian</div>
+    </div>
+    <div class="field">
+      <label for="stringCountSelect">Strings</label>
+      <select id="stringCountSelect"></select>
+    </div>
+    <div class="field">
+      <label for="tuningSelect">Tuning</label>
+      <select id="tuningSelect"></select>
+    </div>
+    <div class="field">
+      <label for="instrumentSelect">Instrument</label>
+      <select id="instrumentSelect"></select>
+    </div>
+    <div class="instrument-status" id="instrumentStatus"></div>
+  </section>
+
+  <section class="stats">
+    <div class="tile">
+      <div class="tile-label">Root Key</div>
+      <div class="tile-value" id="statRoot">D</div>
+      <div class="tile-sub">Selected tonic note</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Mode</div>
+      <div class="tile-value" id="statMode">Dorian</div>
+      <div class="tile-sub" id="statModeNum">2nd mode of the major scale</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Formula</div>
+      <div class="tile-value small" id="statFormula">1 2 ♭3 4 5 6 ♭7</div>
+      <div class="tile-sub">Scale degrees vs. major</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Parent Major</div>
+      <div class="tile-value" id="statParent">C Major</div>
+      <div class="tile-sub">Same notes, different tonic</div>
+    </div>
+    <div class="tile tile-position">
+      <div class="tile-label">Position</div>
+      <div class="position-toggles" id="positionToggles"></div>
+      <div class="tile-sub" id="positionSub">Full neck shown</div>
+    </div>
+  </section>
+
+  <section class="card study-card">
+    <div class="card-head">
+      <span class="bar"></span>
+      <h2>Study Mode</h2>
+    </div>
+    <p class="study-desc" id="studyDesc">Cycles the D Dorian scale in time with a metronome, highlighting each note on the fretboard as it plays.</p>
+    <div class="study-controls">
+      <div class="field">
+        <label for="bpmInput">Tempo (BPM)</label>
+        <input type="number" id="bpmInput" min="40" max="208" value="80">
+      </div>
+      <button class="btn btn-accent" id="studyToggleBtn">▶ Start Study</button>
+      <span class="beat-indicator" id="beatIndicator" title="Metronome beat"></span>
+    </div>
+  </section>
+
+  <section class="row row-main">
+    <div class="card card-fretboard">
+      <div class="card-head">
+        <span class="bar"></span>
+        <h2 id="fbTitle">4-String Bass — D Dorian</h2>
+      </div>
+      <div class="svg-wrap">
+        <svg id="fretboard" viewBox="0 0 1000 320" preserveAspectRatio="xMinYMin meet"></svg>
+      </div>
+      <div class="legend">
+        <span class="legend-item"><i class="dot root"></i> Root note</span>
+        <span class="legend-item"><i class="dot tone"></i> Scale tone</span>
+        <span class="legend-item muted"><span class="swipe-hint">Swipe the fretboard sideways for more frets · </span>Tap a note to hear its pitch · Frets 0–15</span>
+      </div>
+    </div>
+
+    <div class="card card-notes">
+      <div class="card-head">
+        <span class="bar"></span>
+        <h2>Scale Notes</h2>
+        <span class="hint">click to play</span>
+      </div>
+      <div class="note-list" id="noteList"></div>
+    </div>
+  </section>
+
+  <section class="row row-bottom">
+    <div class="card">
+      <div class="card-head">
+        <span class="bar"></span>
+        <h2>Interval Steps</h2>
+      </div>
+      <div class="steps" id="stepChips"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="bar"></span>
+        <h2>All 7 Modes of <span id="allModesKey">C</span></h2>
+      </div>
+      <div class="mode-list" id="modeList"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="bar"></span>
+        <h2>About This Mode</h2>
+      </div>
+      <div class="about" id="aboutText"></div>
+    </div>
+  </section>
+
+</main>
+
+<script src="common.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c0710">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Chords">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c0710'/%3E%3Ccircle cx='11' cy='11' r='4' fill='%23f5439b'/%3E%3Ccircle cx='21' cy='21' r='4' fill='%239b6bff'/%3E%3C/svg%3E">
+<title>Chord Explorer</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <h1>Chord <span>Explorer</span></h1>
+    <div class="brand-meta">
+      <span class="live-dot"></span>
+      <span id="tuningMeta">STANDARD E &nbsp;·&nbsp; E&nbsp;A&nbsp;D&nbsp;G&nbsp;B&nbsp;e</span>
+    </div>
+    <nav class="page-nav">
+      <a href="index.html" class="page-nav-link">Modes</a>
+      <a href="chords.html" class="page-nav-link active">Chords</a>
+      <a href="bass.html" class="page-nav-link">Bass</a>
+    </nav>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn" id="playBtn">▶ PLAY CHORD</button>
+    <button class="btn" id="randomBtn">RANDOM ⟳</button>
+    <button class="btn" id="resetBtn">RESET</button>
+    <div class="settings-menu">
+      <button class="btn settings-toggle" id="themeToggle">◐ THEME</button>
+      <div class="settings-panel" id="themePanel">
+        <div class="settings-panel-title">Choose Theme</div>
+        <button class="theme-option" data-theme="default">
+          <span class="swatch" style="background:#f5439b"></span>
+          <span class="opt-label">Default</span>
+          <span class="check">✓</span>
+        </button>
+        <button class="theme-option" data-theme="pipboy">
+          <span class="swatch" style="background:#4dff9c"></span>
+          <span class="opt-label">Pip-Boy</span>
+          <span class="check">✓</span>
+        </button>
+        <button class="theme-option" data-theme="paper">
+          <span class="swatch" style="background:#a1332c"></span>
+          <span class="opt-label">Paper</span>
+          <span class="check">✓</span>
+        </button>
+        <button class="theme-option" data-theme="sakura">
+          <span class="swatch" style="background:#ff5fa8"></span>
+          <span class="opt-label">Sakura</span>
+          <span class="check">✓</span>
+        </button>
+        <button class="theme-option" data-theme="sky">
+          <span class="swatch" style="background:#5db8f2"></span>
+          <span class="opt-label">Sky</span>
+          <span class="check">✓</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="filterbar">
+    <div class="field">
+      <label for="keySelect">Root</label>
+      <select id="keySelect"></select>
+    </div>
+    <div class="field">
+      <label for="bassSelect">Bass note</label>
+      <select id="bassSelect"></select>
+    </div>
+    <div class="field">
+      <label for="tuningSelect">Tuning</label>
+      <select id="tuningSelect"></select>
+    </div>
+    <div class="field">
+      <label for="instrumentSelect">Instrument</label>
+      <select id="instrumentSelect"></select>
+    </div>
+    <div class="field readout">
+      <label>&nbsp;</label>
+      <div class="pill" id="currentPill">C</div>
+    </div>
+    <div class="instrument-status" id="instrumentStatus"></div>
+  </section>
+
+  <section class="stats">
+    <div class="tile">
+      <div class="tile-label">Chord</div>
+      <div class="tile-value" id="statChord">C</div>
+      <div class="tile-sub" id="statChordName">Major</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Notes</div>
+      <div class="tile-value small" id="statNotes">C E G</div>
+      <div class="tile-sub">Notes sounded in this voicing</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Formula</div>
+      <div class="tile-value small" id="statFormula">1 3 5</div>
+      <div class="tile-sub">Scale degrees vs. major</div>
+    </div>
+    <div class="tile">
+      <div class="tile-label">Fretboard</div>
+      <div class="tile-value small" id="statFrets">Open position</div>
+      <div class="tile-sub" id="statFretsSub">Frets 0–3</div>
+    </div>
+  </section>
+
+  <section class="row row-main-chords">
+    <div class="card card-chordlist">
+      <div class="card-head">
+        <span class="bar"></span>
+        <h2>All Chords in <span id="listRootLabel">C</span></h2>
+        <span class="hint">click to play</span>
+      </div>
+      <div class="chord-grid" id="chordGrid"></div>
+    </div>
+
+    <div class="card card-chorddiagram">
+      <div class="card-head">
+        <span class="bar"></span>
+        <h2 id="diagramTitle">Fretboard — C</h2>
+      </div>
+      <div class="chord-position-row">
+        <span class="chord-position-label">Inversion</span>
+        <div class="chord-position-toggles" id="inversionToggles"></div>
+      </div>
+      <div class="chord-position-row">
+        <span class="chord-position-label">Position</span>
+        <div class="chord-position-toggles" id="chordPositionToggles"></div>
+      </div>
+      <div class="chord-diagram-wrap">
+        <svg id="chordDiagram" viewBox="0 0 220 300" preserveAspectRatio="xMidYMin meet"></svg>
+      </div>
+      <div class="legend">
+        <span class="legend-item"><i class="dot root"></i> Root note</span>
+        <span class="legend-item"><i class="dot tone"></i> Chord tone</span>
+        <span class="legend-item"><i class="dot bass"></i> Bass note</span>
+        <span class="legend-item muted">Numbers = fingering &nbsp;·&nbsp; X = muted &nbsp;·&nbsp; O = open</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="row row-bottom-chords">
+    <div class="card">
+      <div class="card-head">
+        <span class="bar"></span>
+        <h2>About This Chord</h2>
+      </div>
+      <div class="about" id="aboutText"></div>
+    </div>
+  </section>
+
+</main>
+
+<script src="common.js"></script>
+<script src="chords.js"></script>
+</body>
+</html>
